@@ -204,6 +204,7 @@ li {
     .header {
         flex: 0;
     }
+    
 }
 
 @media only screen and (max-width: 400px) {
@@ -218,6 +219,11 @@ li {
     .line {
         margin-top: 1.4rem;
     }
+    
+    .hour {
+        opacity: 0;
+    }
+    
 }
 
 @media only screen and (max-width: 320px) {
@@ -231,6 +237,10 @@ li {
 
     .line {
         margin-top: 0.8rem;
+    }
+    
+     .hour {
+        opacity: 0;
     }
 }
 
