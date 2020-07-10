@@ -208,7 +208,7 @@ li {
 
 @media only screen and (max-width: 400px) {
     .to-do-list-section {
-        margin-top: 7rem;
+        margin-top: 9rem;
     }
 
     .done-section {
