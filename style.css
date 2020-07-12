@@ -212,12 +212,13 @@ li {
 }
 
 @media only screen and (max-width: 400px) {
-    .hour {
-        opacity: 0;
-    }
+/*     .hour {
+        opacity: 1;
+    } */
     
     .line {
         margin-bottom: 2rem;
+        opacity: 0;
     }
 }
 /* @media only screen and (max-width: 400px) {
