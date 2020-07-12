@@ -211,6 +211,15 @@ li {
     
 }
 
+@media only screen and (max-width: 400px) {
+    .hour {
+        opacity: 0;
+    }
+    
+    .line {
+        margin-bottom: 3rem;
+    }
+}
 /* @media only screen and (max-width: 400px) {
     .to-do-list-section {
         /* margin-top: 9rem; 
