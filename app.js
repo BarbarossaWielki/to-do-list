@@ -27,8 +27,13 @@ var dataController = (function(){
         updateData: function(action, ID) {
             var ids, index;
             if(action === 'ok') {
-                console.log(data.totalTask.toDo.indexOf(Task.id = ID));
-                var doneItem = new Task(data.totalTask.toDo[ID].value, data.totalTask.done.length);
+                function findItem(item) {
+                    return item.id === ID; 
+                }; 
+                var newItem = data.totalTask.toDo.find(findItem);
+               // var indexof = data.totalTask.done.find(element => element.id = ID );
+                
+                var doneItem = new Task(newItem.value, data.totalTask.done.length);
                 
                 data.totalTask.done.push(doneItem);
                 
@@ -119,7 +124,7 @@ var globalController = (function(dataCtrl, UICtrl){
         var DOMStrings = UICtrl.getDOMStrings();
         document.querySelector(DOMStrings.addButton).addEventListener('click', addTask);
 
-        document.addEventListener('keypress', function(event) {
+        document.addEventListener('keydown', function(event) {
             //This function arised to add tasks when someone click 'enter' insted of add button
             if (event.keyCode === 13 || event.which === 13) {
                 addTask();
