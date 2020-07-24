@@ -1,11 +1,11 @@
-var dataController = (function(){
-    var Task = function(value, id){
+var dataController = (function () {
+    var Task = function (value, id) {
         this.value = value;
         this.id = id;
     }
 
     var data = {
-        totalTask: {
+        totalTasks: {
             toDo: [],
             done: []
         },
@@ -13,67 +13,67 @@ var dataController = (function(){
         percentage: -1
     }
     return {
-        addTask: function(newTask) {
+        addTask: function (newTask) {
             var ID;
 
-            if (data.totalTask.toDo.length === 0) ID = 0;
-            else ID = data.totalTask.toDo.length;
+            if (data.totalTasks.toDo.length === 0) ID = 0;
+            else ID = data.totalTasks.toDo.length;
             var newItem = new Task(newTask, ID);
-            data.totalTask.toDo.push(newItem);
+            data.totalTasks.toDo.push(newItem);
             return newItem
 
         },
 
-        updateData: function(action, ID) {
+        updateData: function (action, ID) {
             var ids, index, type, newType, displayType;
 
-            if (action === 'ok' || action === 'delete') { type = data.totalTask.toDo; newType = data.totalTask.done}
-            else if (action === 'return' || action === 'deleteDone') { type = data.totalTask.done; newType = data.totalTask.toDo}
+            if (action === 'ok' || action === 'delete') { type = data.totalTasks.toDo; newType = data.totalTasks.done }
+            else if (action === 'return' || action === 'deleteDone') { type = data.totalTasks.done; newType = data.totalTasks.toDo }
 
             if (action === 'return') displayType = 'toDo';
             else if (action === 'ok') displayType = 'done';
 
-            if(action === 'ok' || action === 'return') {
+            if (action === 'ok' || action === 'return') {
                 function findItem(item) {
-                    return item.id === ID; 
-                }; 
+                    return item.id === ID;
+                };
                 var newItem = type.find(findItem);
                 console.log(newItem);
-                
+
                 var doneItem = new Task(newItem.value, newType.length);
-                
+
                 newType.push(doneItem);
-                
-            } 
-            
-            
-            ids = type.map(function(cur){
-                
+
+            }
+
+
+            ids = type.map(function (cur) {
+
                 return cur.id;
-               
+
             });
-                
+
             index = ids.indexOf(ID);
-            
+
             if (index !== -1) {
                 type.splice(index, 1);
-             console.log(data);
+                console.log(data);
             }
-            
-            if(action === 'ok' || action === 'return') {
+
+            if (action === 'ok' || action === 'return') {
                 return {
                     doneItem,
                     displayType
-                } 
+                }
             }
-                
+
         },
 
-        tasksProgressCalculating: function() {
-            var toDoLength  = data.totalTask.toDo.length;
-            var doneLength = data.totalTask.done.length; 
+        tasksProgressCalculating: function () {
+            var toDoLength = data.totalTasks.toDo.length;
+            var doneLength = data.totalTasks.done.length;
             var totalLength = toDoLength + doneLength;
-            var progress =  Math.round((doneLength / totalLength) * 100); 
+            var progress = Math.round((doneLength / totalLength) * 100);
             data.percentage = progress;
             return {
                 toDoLength,
@@ -83,16 +83,16 @@ var dataController = (function(){
             }
         },
 
-        test: function() {
+        test: function () {
             console.log(data);
         }
-        
+
 
     }
-   
+
 })();
 
-var UIController = (function(){
+var UIController = (function () {
     var DOMStrings = {
         input: '.to-do-input',
         addButton: '.plus-icon',
@@ -111,14 +111,14 @@ var UIController = (function(){
     };
 
     return {
-        getInput: function() {
-            
+        getInput: function () {
+
             return {
                 value: document.querySelector(DOMStrings.input).value
             }
-       }, 
+        },
 
-       displayToDoTasks: function(obj) {
+        displayToDoTasks: function (obj) {
             var html = '<li id="to-do-$id$">$task$<i class="demo-icon icon-ok ok" id="ok-$id$"></i><i class="demo-icon icon-cancel cancel" id="delete-$id$"></i></li>';
             var newHtml;
             newHtml = html.replace('$task$', obj.value);
@@ -126,10 +126,10 @@ var UIController = (function(){
             newHtml = newHtml.replace('$id$', obj.id);
             newHtml = newHtml.replace('$id$', obj.id);
             document.querySelector(DOMStrings.toDo).insertAdjacentHTML('beforeend', newHtml);
-           
-       },
 
-       displayDoneItem: function(obj) {
+        },
+
+        displayDoneItem: function (obj) {
             var html = '<li id="done-$id$"><i class="demo-icon icon-left left" id="return-$id$"></i>$task$<i class="demo-icon icon-cancel cancel" id="deleteDone-$id$"></i></li>';
             var newHtml;
             newHtml = html.replace('$task$', obj.value);
@@ -137,18 +137,18 @@ var UIController = (function(){
             newHtml = newHtml.replace('$id$', obj.id);
             newHtml = newHtml.replace('$id$', obj.id);
             document.querySelector(DOMStrings.done).insertAdjacentHTML('beforeend', newHtml);
-       },
+        },
 
-       deleteListItem: function(action ,selectorID) {
+        deleteListItem: function (action, selectorID) {
             if (action === 'ok' || action === 'delete') var name = 'to-do-' + selectorID;
             else if (action === 'return' || action === 'deleteDone') var name = 'done-' + selectorID;
 
             var el = document.getElementById(name);
-            el.parentNode.removeChild(el);      
+            el.parentNode.removeChild(el);
         },
 
-        displayProgress: function(progress) {
-            if(!isNaN(progress.progress) === false) progress.progress = 100;
+        displayProgress: function (progress) {
+            if (!isNaN(progress.progress) === false) progress.progress = 100;
             document.querySelector(DOMStrings.doneItems).textContent = progress.doneLength;
             document.querySelector(DOMStrings.allItems).textContent = progress.totalLength;
             document.querySelector(DOMStrings.percentage).textContent = progress.progress + '%';
@@ -156,40 +156,40 @@ var UIController = (function(){
             document.querySelector(DOMStrings.howManyDone).textContent = progress.doneLength;
         },
 
-        displayDate: function() {
+        displayDate: function () {
             var now, month, year, day, hour, minute, second;
-            
+
             now = new Date();
 
             day = now.getDate();
-            month = now.getMonth() + 1;    
+            month = now.getMonth() + 1;
             year = now.getFullYear();
             hour = now.getHours();
             minute = now.getMinutes();
             // second = now.getSeconds();
-            
-            
-            document.querySelector(DOMStrings.dateLabel).textContent =  ((day<10) ? '0': '') + day + '-' +((month<10) ? '0': '') + month + '-' + year;
-            document.querySelector(DOMStrings.hourLabel).textContent = ((hour<10) ? '0': '') + hour + '.' + ((minute<10) ? '0': '') + minute /* + '.' + second */;
+
+
+            document.querySelector(DOMStrings.dateLabel).textContent = ((day < 10) ? '0' : '') + day + '-' + ((month < 10) ? '0' : '') + month + '-' + year;
+            document.querySelector(DOMStrings.hourLabel).textContent = ((hour < 10) ? '0' : '') + hour + '.' + ((minute < 10) ? '0' : '') + minute /* + '.' + second */;
 
         },
 
-       getDOMStrings: function() {
-           return DOMStrings;
-       }
-       
-       
+        getDOMStrings: function () {
+            return DOMStrings;
+        }
+
+
     }
 
 })();
 
-var globalController = (function(dataCtrl, UICtrl){
+var globalController = (function (dataCtrl, UICtrl) {
     var DOMStrings = UICtrl.getDOMStrings();
-    var eventsController = function() {
-        
+    var eventsController = function () {
+
         document.querySelector(DOMStrings.addButton).addEventListener('click', addTask);
 
-        document.addEventListener('keydown', function(event) {
+        document.addEventListener('keydown', function (event) {
             //This function arised to add tasks when someone click 'enter' insted of add button
             if (event.keyCode === 13 || event.which === 13) {
                 addTask();
@@ -198,16 +198,16 @@ var globalController = (function(dataCtrl, UICtrl){
 
         document.querySelector(DOMStrings.bottom).addEventListener('click', buttonController);
     };
-  
-    var addTask = function() {
+
+    var addTask = function () {
         var input, newItem;
         // 1. get input value
         input = UICtrl.getInput();
         // 2. check if input is empty
-        if (input.value !== ''){
+        if (input.value !== '') {
             // 1. Update data structur
             newItem = dataCtrl.addTask(input.value);
-            
+
 
             // 2. Display in UI
             UICtrl.displayToDoTasks(newItem);
@@ -215,13 +215,13 @@ var globalController = (function(dataCtrl, UICtrl){
             //3. Calculate progress
             var progress = dataController.tasksProgressCalculating();
             UICtrl.displayProgress(progress);
-            
-            
+
+
         }
         document.querySelector(DOMStrings.input).value = null;
     };
 
-    var buttonController = function(event) {
+    var buttonController = function (event) {
         var itemID, splitID, ID, action;
         itemID = event.target.id;
         //console.log(itemID) //ok-0 delete-0;
@@ -233,35 +233,37 @@ var globalController = (function(dataCtrl, UICtrl){
             console.log(ID);
             action = splitID[0]; //ok/return/delete/deleteDone
 
-            var item = dataCtrl.updateData(action,ID);
+            var item = dataCtrl.updateData(action, ID);
             console.log(item);
             // 1. display done item if user click ok btn
 
             if (item) {
                 if (item.displayType === 'toDo')
-                UICtrl.displayToDoTasks(item.doneItem); 
+                    UICtrl.displayToDoTasks(item.doneItem);
                 else if (item.displayType === 'done')
-                UICtrl.displayDoneItem(item.doneItem);
-               
-                UICtrl.deleteListItem(action ,ID);
+                    UICtrl.displayDoneItem(item.doneItem);
+
+                UICtrl.deleteListItem(action, ID);
             } else UICtrl.deleteListItem(action, ID);
-            
+
             var progress = dataController.tasksProgressCalculating();
             UICtrl.displayProgress(progress);
-            
+
         }
 
     }
-  
+
     return {
-        init: function(){
+        init: function () {
             console.log('Application has started.');
             eventsController();
-            UICtrl.displayProgress({toDoLength: 0,
+            UICtrl.displayProgress({
+                toDoLength: 0,
                 doneLength: 0,
-                totalLength:0,
-                progress: 100});
-                window.setInterval(UICtrl.displayDate, 0) ;
+                totalLength: 0,
+                progress: 100
+            });
+            window.setInterval(UICtrl.displayDate, 0);
         }
     }
 
