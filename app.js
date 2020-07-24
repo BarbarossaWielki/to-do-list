@@ -15,9 +15,8 @@ var dataController = (function () {
     return {
         addTask: function (newTask) {
             var ID;
-
-            if (data.totalTasks.toDo.length === 0) ID = 0;
-            else ID = data.totalTasks.toDo.length;
+            
+            ID = data.totalTasks.toDo.length;
             var newItem = new Task(newTask, ID);
             data.totalTasks.toDo.push(newItem);
             return newItem
