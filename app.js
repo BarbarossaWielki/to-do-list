@@ -25,21 +25,29 @@ var dataController = (function(){
         },
 
         updateData: function(action, ID) {
-            var ids, index;
-            if(action === 'ok') {
+            var ids, index, type, newType, displayType;
+
+            if (action === 'ok' || action === 'delete') { type = data.totalTask.toDo; newType = data.totalTask.done}
+            else if (action === 'return' || action === 'deleteDone') { type = data.totalTask.done; newType = data.totalTask.toDo}
+
+            if (action === 'return') displayType = 'toDo';
+            else if (action === 'ok') displayType = 'done';
+
+            if(action === 'ok' || action === 'return') {
                 function findItem(item) {
                     return item.id === ID; 
                 }; 
-                var newItem = data.totalTask.toDo.find(findItem);
-               // var indexof = data.totalTask.done.find(element => element.id = ID );
+                var newItem = type.find(findItem);
+                console.log(newItem);
                 
-                var doneItem = new Task(newItem.value, data.totalTask.done.length);
+                var doneItem = new Task(newItem.value, newType.length);
                 
-                data.totalTask.done.push(doneItem);
+                newType.push(doneItem);
                 
             } 
             
-            ids = data.totalTask.toDo.map(function(cur){
+            
+            ids = type.map(function(cur){
                 
                 return cur.id;
                
@@ -48,16 +56,31 @@ var dataController = (function(){
             index = ids.indexOf(ID);
             
             if (index !== -1) {
-                data.totalTask.toDo.splice(index, 1);
+                type.splice(index, 1);
              console.log(data);
             }
-           
             
-            if(action === 'ok') {
-                return doneItem; 
+            if(action === 'ok' || action === 'return') {
+                return {
+                    doneItem,
+                    displayType
+                } 
             }
                 
-        
+        },
+
+        tasksProgressCalculating: function() {
+            var toDoLength  = data.totalTask.toDo.length;
+            var doneLength = data.totalTask.done.length; 
+            var totalLength = toDoLength + doneLength;
+            var progress =  Math.round((doneLength / totalLength) * 100); 
+            data.percentage = progress;
+            return {
+                toDoLength,
+                doneLength,
+                totalLength,
+                progress
+            }
         },
 
         test: function() {
@@ -73,55 +96,97 @@ var UIController = (function(){
     var DOMStrings = {
         input: '.to-do-input',
         addButton: '.plus-icon',
-        doneBtn: '.ok-'     
+        doneBtn: '.ok-',
+        doneItems: '.done-items',
+        allItems: '.all-items',
+        percentage: '.percentage',
+        input: '.to-do-input',
+        bottom: '.bottom',
+        toDo: '.to-do',
+        done: '.done',
+        dateLabel: '.day',
+        hourLabel: '.hour',
+        howManyToDo: '.how-many-to-do',
+        howManyDone: '.how-many-done'
     };
 
     return {
-       getInput: function() {
-           return {
+        getInput: function() {
+            
+            return {
                 value: document.querySelector(DOMStrings.input).value
-           }
+            }
        }, 
 
        displayToDoTasks: function(obj) {
-            var html = '<li id="$id$">$task$<i class="demo-icon icon-ok ok" id="ok-$id$"></i><i class="demo-icon icon-cancel cancel" id="delete-$id$"></i></li>';
+            var html = '<li id="to-do-$id$">$task$<i class="demo-icon icon-ok ok" id="ok-$id$"></i><i class="demo-icon icon-cancel cancel" id="delete-$id$"></i></li>';
             var newHtml;
             newHtml = html.replace('$task$', obj.value);
             newHtml = newHtml.replace('$id$', obj.id);
             newHtml = newHtml.replace('$id$', obj.id);
             newHtml = newHtml.replace('$id$', obj.id);
-            document.querySelector('.to-do').insertAdjacentHTML('beforeend', newHtml);
+            document.querySelector(DOMStrings.toDo).insertAdjacentHTML('beforeend', newHtml);
            
        },
 
        displayDoneItem: function(obj) {
-        var html = '<li><i class="demo-icon icon-left left" id="return-$id$"></i>$task$<i class="demo-icon icon-cancel cancel" id="deleteDone-$id$"></i></li>';
-        var newHtml;
-        newHtml = html.replace('$task$', obj.value);
-        newHtml = newHtml.replace('$id$', obj.id);
-        newHtml = newHtml.replace('$id$', obj.id);
-        document.querySelector('.done').insertAdjacentHTML('beforeend', newHtml);
+            var html = '<li id="done-$id$"><i class="demo-icon icon-left left" id="return-$id$"></i>$task$<i class="demo-icon icon-cancel cancel" id="deleteDone-$id$"></i></li>';
+            var newHtml;
+            newHtml = html.replace('$task$', obj.value);
+            newHtml = newHtml.replace('$id$', obj.id);
+            newHtml = newHtml.replace('$id$', obj.id);
+            newHtml = newHtml.replace('$id$', obj.id);
+            document.querySelector(DOMStrings.done).insertAdjacentHTML('beforeend', newHtml);
        },
 
-       deleteListItem: function(selectorID) {
+       deleteListItem: function(action ,selectorID) {
+            if (action === 'ok' || action === 'delete') var name = 'to-do-' + selectorID;
+            else if (action === 'return' || action === 'deleteDone') var name = 'done-' + selectorID;
+
+            var el = document.getElementById(name);
+            el.parentNode.removeChild(el);      
+        },
+
+        displayProgress: function(progress) {
+            if(!isNaN(progress.progress) === false) progress.progress = 100;
+            document.querySelector(DOMStrings.doneItems).textContent = progress.doneLength;
+            document.querySelector(DOMStrings.allItems).textContent = progress.totalLength;
+            document.querySelector(DOMStrings.percentage).textContent = progress.progress + '%';
+            document.querySelector(DOMStrings.howManyToDo).textContent = progress.toDoLength;
+            document.querySelector(DOMStrings.howManyDone).textContent = progress.doneLength;
+        },
+
+        displayDate: function() {
+            var now, month, year, day, hour, minute, second;
             
-        var el = document.getElementById(selectorID);
-        el.parentNode.removeChild(el);
-        
+            now = new Date();
+
+            day = now.getDate();
+            month = now.getMonth() + 1;    
+            year = now.getFullYear();
+            hour = now.getHours();
+            minute = now.getMinutes();
+            // second = now.getSeconds();
+            
+            
+            document.querySelector(DOMStrings.dateLabel).textContent =  ((day<10) ? '0': '') + day + '-' +((month<10) ? '0': '') + month + '-' + year;
+            document.querySelector(DOMStrings.hourLabel).textContent = ((hour<10) ? '0': '') + hour + '.' + ((minute<10) ? '0': '') + minute /* + '.' + second */;
+
         },
 
        getDOMStrings: function() {
            return DOMStrings;
        }
        
+       
     }
 
 })();
 
 var globalController = (function(dataCtrl, UICtrl){
-    
+    var DOMStrings = UICtrl.getDOMStrings();
     var eventsController = function() {
-        var DOMStrings = UICtrl.getDOMStrings();
+        
         document.querySelector(DOMStrings.addButton).addEventListener('click', addTask);
 
         document.addEventListener('keydown', function(event) {
@@ -131,7 +196,7 @@ var globalController = (function(dataCtrl, UICtrl){
             }
         });
 
-        document.querySelector('body').addEventListener('click', buttonController);
+        document.querySelector(DOMStrings.bottom).addEventListener('click', buttonController);
     };
   
     var addTask = function() {
@@ -146,8 +211,14 @@ var globalController = (function(dataCtrl, UICtrl){
 
             // 2. Display in UI
             UICtrl.displayToDoTasks(newItem);
+
+            //3. Calculate progress
+            var progress = dataController.tasksProgressCalculating();
+            UICtrl.displayProgress(progress);
+            
             
         }
+        document.querySelector(DOMStrings.input).value = null;
     };
 
     var buttonController = function(event) {
@@ -160,17 +231,23 @@ var globalController = (function(dataCtrl, UICtrl){
 
             ID = parseInt(splitID[1]); //0
             console.log(ID);
-            action = splitID[0]; //ok/delete
+            action = splitID[0]; //ok/return/delete/deleteDone
 
             var item = dataCtrl.updateData(action,ID);
             console.log(item);
             // 1. display done item if user click ok btn
 
             if (item) {
-                UICtrl.displayDoneItem(item);
-                UICtrl.deleteListItem(ID);
-            } else UICtrl.deleteListItem(ID);
+                if (item.displayType === 'toDo')
+                UICtrl.displayToDoTasks(item.doneItem); 
+                else if (item.displayType === 'done')
+                UICtrl.displayDoneItem(item.doneItem);
+               
+                UICtrl.deleteListItem(action ,ID);
+            } else UICtrl.deleteListItem(action, ID);
             
+            var progress = dataController.tasksProgressCalculating();
+            UICtrl.displayProgress(progress);
             
         }
 
@@ -180,6 +257,11 @@ var globalController = (function(dataCtrl, UICtrl){
         init: function(){
             console.log('Application has started.');
             eventsController();
+            UICtrl.displayProgress({toDoLength: 0,
+                doneLength: 0,
+                totalLength:0,
+                progress: 100});
+                window.setInterval(UICtrl.displayDate, 0) ;
         }
     }
 
