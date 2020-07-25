@@ -196,6 +196,7 @@ var globalController = (function (dataCtrl, UICtrl) {
         });
 
         document.querySelector(DOMStrings.bottom).addEventListener('click', buttonController);
+        window.localStorage;
     };
 
     var addTask = function () {
@@ -214,7 +215,7 @@ var globalController = (function (dataCtrl, UICtrl) {
             //3. Calculate progress
             var progress = dataController.tasksProgressCalculating();
             UICtrl.displayProgress(progress);
-
+            window.localStorage;
 
         }
         document.querySelector(DOMStrings.input).value = null;
@@ -247,6 +248,7 @@ var globalController = (function (dataCtrl, UICtrl) {
 
             var progress = dataController.tasksProgressCalculating();
             UICtrl.displayProgress(progress);
+            window.localStorage;
 
         }
 
