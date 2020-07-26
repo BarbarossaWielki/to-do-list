@@ -15,7 +15,7 @@ var dataController = (function () {
     return {
         addTask: function (newTask) {
             var ID;
-            
+
             ID = data.totalTasks.toDo.length;
             var newItem = new Task(newTask, ID);
             data.totalTasks.toDo.push(newItem);
@@ -93,18 +93,17 @@ var dataController = (function () {
 
 var UIController = (function () {
     var DOMStrings = {
-        input: '.to-do-input',
-        addButton: '.plus-icon',
+        addButton: '.add-button',
         doneBtn: '.ok-',
         doneItems: '.done-items',
         allItems: '.all-items',
         percentage: '.percentage',
-        input: '.to-do-input',
+        input: '.operator-input',
         bottom: '.bottom',
         toDo: '.to-do',
         done: '.done',
         dateLabel: '.day',
-        hourLabel: '.hour',
+        hourLabel: '.operator-hour',
         howManyToDo: '.how-many-to-do',
         howManyDone: '.how-many-done'
     };
@@ -118,7 +117,7 @@ var UIController = (function () {
         },
 
         displayToDoTasks: function (obj) {
-            var html = '<li id="to-do-$id$">$task$<i class="demo-icon icon-ok ok" id="ok-$id$"></i><i class="demo-icon icon-cancel cancel" id="delete-$id$"></i></li>';
+            var html = '<li id="to-do-$id$" class="li">$task$<i class="demo-icon icon-ok done-button" id="ok-$id$"></i><i class="demo-icon icon-cancel remove-button" id="delete-$id$"></i></li>';
             var newHtml;
             newHtml = html.replace('$task$', obj.value);
             newHtml = newHtml.replace('$id$', obj.id);
@@ -129,7 +128,7 @@ var UIController = (function () {
         },
 
         displayDoneItem: function (obj) {
-            var html = '<li id="done-$id$"><i class="demo-icon icon-left left" id="return-$id$"></i>$task$<i class="demo-icon icon-cancel cancel" id="deleteDone-$id$"></i></li>';
+            var html = '<li id="done-$id$" class="li"><i class="demo-icon icon-left return-button" id="return-$id$"></i>$task$<i class="demo-icon icon-cancel remove-button" id="deleteDone-$id$"></i></li>';
             var newHtml;
             newHtml = html.replace('$task$', obj.value);
             newHtml = newHtml.replace('$id$', obj.id);
@@ -196,7 +195,6 @@ var globalController = (function (dataCtrl, UICtrl) {
         });
 
         document.querySelector(DOMStrings.bottom).addEventListener('click', buttonController);
-       
     };
 
     var addTask = function () {
@@ -215,7 +213,7 @@ var globalController = (function (dataCtrl, UICtrl) {
             //3. Calculate progress
             var progress = dataController.tasksProgressCalculating();
             UICtrl.displayProgress(progress);
-           
+
 
         }
         document.querySelector(DOMStrings.input).value = null;
@@ -248,7 +246,6 @@ var globalController = (function (dataCtrl, UICtrl) {
 
             var progress = dataController.tasksProgressCalculating();
             UICtrl.displayProgress(progress);
-        
 
         }
 
