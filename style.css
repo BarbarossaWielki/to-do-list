@@ -420,7 +420,8 @@ template {
 
 .header {
   text-align: center;
-  flex: 100%; }
+  flex: 100%;
+  margin-bottom: 0; }
   .header-h1 {
     font-size: 5rem;
     font-family: 'Bangers', cursive;
@@ -449,7 +450,8 @@ template {
   display: -webkit-flex;
   /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
   display: flex;
-  /* NEW, Spec - Firefox, Chrome, Opera */ }
+  /* NEW, Spec - Firefox, Chrome, Opera */
+  margin-top: 0; }
   .operator-hour {
     flex: 1;
     font-size: 4rem;
@@ -462,8 +464,7 @@ template {
         font-size: 1.05rem;
         flex: 100vw;
         margin-bottom: 0.5rem;
-        justify-content: center;
-        display: none; } }
+        justify-content: center; } }
   .operator-input {
     flex: 5;
     height: 3rem;
