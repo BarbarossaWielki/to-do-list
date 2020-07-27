@@ -464,7 +464,7 @@ template {
     @media only screen and (max-width: 450px) {
       .operator-hour {
         font-size: 1.05rem;
-        flex: 100vw;
+        flex: 100%;
         margin-bottom: 0.5rem;
         justify-content: center; } }
   .operator-input {
