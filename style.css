@@ -419,7 +419,6 @@ template {
   width: 100%; }
 
 .header {
-  margin-top: 1.5rem;
   text-align: center;
   flex: 100%; }
   .header-h1 {
@@ -463,7 +462,8 @@ template {
         font-size: 1.05rem;
         flex: 100vw;
         margin-bottom: 0.5rem;
-        justify-content: center; } }
+        justify-content: center;
+        display: none; } }
   .operator-input {
     flex: 5;
     height: 3rem;
