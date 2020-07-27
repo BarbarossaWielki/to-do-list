@@ -7,34 +7,25 @@
   100% {
     opacity: 1; } }
 
-@media only screen and (min-width: 500px) {
-  .to-do-list-section, .done-section {
-    margin-top: 0; }
-  .header {
-    flex: 0; }
-  .li {
-    width: 30%; } }
-
-@media only screen and (max-width: 400px) {
-  /*     .hour {
-        opacity: 1;
-    } */
-  .line {
-    margin-bottom: 2rem;
-    opacity: 0; }
-  .li {
-    width: 16rem; } }
-
 * {
   padding: 0;
   margin: 0;
   font-size: 18px; }
 
 .add-button {
-  flex: 2vw;
-  font-size: 2.5rem;
+  flex: 0.5 1 1;
+  margin-bottom: 0.8rem;
+  font-size: 3rem;
   color: #ffffff;
   cursor: pointer; }
+  @media only screen and (max-width: 650px) {
+    .add-button {
+      font-size: 2rem; } }
+  @media only screen and (max-width: 450px) {
+    .add-button {
+      font-size: 1.7rem;
+      flex: 5vw;
+      margin-bottom: 0.7rem; } }
 
 .done-button {
   margin-left: 5px;
@@ -59,10 +50,9 @@
     cursor: pointer; }
 
 .to-do-list-section, .done-section {
-  flex: 50%;
+  flex: 1;
   flex-wrap: wrap;
   background-color: #8425aa49;
-  margin-top: 4rem;
   padding-bottom: 2rem; }
   .to-do-list-section-header, .to-do-list-section .done-section-header, .done-section-header, .done-section .done-section-header {
     font-size: 2rem;
@@ -71,11 +61,14 @@
     letter-spacing: 0.5rem;
     margin-bottom: 1.5rem;
     margin-top: 1.5rem; }
+    @media only screen and (max-width: 650px) {
+      .to-do-list-section-header, .to-do-list-section .done-section-header, .done-section-header, .done-section .done-section-header {
+        font-size: 1.5rem; } }
   .to-do-list-section ul, .done-section ul {
     list-style: none; }
-  .to-do-list-section li, .done-section li {
+  .to-do-list-section .li, .done-section .li {
     background-color: rgba(255, 255, 255, 0.603);
-    width: 18rem;
+    width: 40vw;
     margin-left: auto;
     margin-right: auto;
     border-radius: 2000rem;
@@ -84,6 +77,16 @@
     margin-bottom: 1rem;
     font-size: 1.5rem;
     animation: moveInRight 1s ease-out; }
+    @media only screen and (max-width: 650px) {
+      .to-do-list-section .li, .done-section .li {
+        width: 80vw;
+        margin-bottom: 1rem;
+        padding: 0.5rem;
+        font-size: 1.2rem; } }
+  @media only screen and (max-width: 650px) {
+    .to-do-list-section, .done-section {
+      flex: 100vw;
+      margin-bottom: 1rem; } }
 
 .done-section-header {
   font-size: 2rem;
@@ -96,6 +99,9 @@
 .how-many-to-do, .how-many-done {
   font-size: 2rem;
   font-weight: 800; }
+  @media only screen and (max-width: 650px) {
+    .how-many-to-do, .how-many-done {
+      font-size: 1.5rem; } }
 
 .top {
   display: -webkit-box;
@@ -117,8 +123,17 @@
     font-family: 'Bangers', cursive;
     letter-spacing: 0.8rem;
     margin-bottom: 1rem; }
+    @media only screen and (max-width: 650px) {
+      .header-h1 {
+        font-size: 3rem; } }
+    @media only screen and (max-width: 450px) {
+      .header-h1 {
+        font-size: 2rem; } }
   .header-span, .header-span-time {
     font-size: 1.8rem; }
+    @media only screen and (max-width: 650px) {
+      .header-span, .header-span-time {
+        font-size: 1.08rem; } }
 
 .operator {
   display: flex;
@@ -131,25 +146,49 @@
   display: -webkit-flex;
   /* NEW - Safari 6.1+. iOS 7.1+, BB10 */
   display: flex;
-  /* NEW, Spec - Firefox, Chrome, Opera */ }
+  /* NEW, Spec - Firefox, Chrome, Opera */
+  justify-content: space-evenly; }
   .operator-hour {
-    flex: 15vw;
+    flex: 1;
     font-size: 4rem;
     font-family: 'Lato', sans-serif;
     margin-bottom: 10px; }
+    @media only screen and (max-width: 650px) {
+      .operator-hour {
+        font-size: 2.4rem; } }
+    @media only screen and (max-width: 450px) {
+      .operator-hour {
+        font-size: 1.05rem;
+        flex: 100vw; } }
   .operator-input {
-    flex: 60vw;
+    flex: 5;
     height: 3rem;
     border-radius: 200rem;
     text-align: center;
     margin-bottom: 10px;
     margin-left: 10px; }
+    @media only screen and (max-width: 650px) {
+      .operator-input {
+        height: 1.8rem;
+        font-size: 0.8rem; } }
+    @media only screen and (max-width: 450px) {
+      .operator-input {
+        flex: 70vw; } }
   .operator-aside {
-    flex: 10vw;
+    flex: 1;
     font-size: 2rem;
     margin-right: 5px; }
     .operator-aside-var {
       font-size: 2rem; }
+    @media only screen and (max-width: 650px) {
+      .operator-aside {
+        font-size: 1.8rem; } }
+    @media only screen and (max-width: 360px) {
+      .operator-aside {
+        font-size: 1.4rem;
+        flex: 100vh; }
+        .operator-aside-var {
+          font-size: 1.4rem; } }
 
 .line {
   margin-top: 2rem;
