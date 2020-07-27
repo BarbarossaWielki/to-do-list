@@ -441,7 +441,6 @@ template {
         font-size: 1.08rem; } }
 
 .operator {
-  display: flex;
   flex-wrap: wrap;
   align-items: center;
   display: -webkit-box;
@@ -466,7 +465,8 @@ template {
         font-size: 1.05rem;
         flex: 100%;
         margin-bottom: 0.5rem;
-        justify-content: center; } }
+        justify-content: center;
+        line-height: 2rem; } }
   .operator-input {
     flex: 5;
     height: 3rem;
