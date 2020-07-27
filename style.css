@@ -504,7 +504,6 @@ template {
   height: 0.5rem;
   margin-top: 2.5rem;
   margin-bottom: 2rem;
-  flex: 0.5rem;
   background-color: #f1f2f6;
   clip-path: polygon(25% 0, 95% 0, 75% 100%, 5% 100%); }
 
